@@ -1,0 +1,36 @@
+version: '3.5'
+
+services:
+  pihole:
+    container_name: pihole
+    image: cbcrowe/pihole-unbound:latest
+    restart: always
+    hostname: pihole
+    domainname: pihole.local
+    ports:
+      - 4443:443
+      - 53:53/tcp
+      - 53:53/udp
+      - 8080:80
+      - 5335:5335 
+    environment:
+      - FTLCONF_LOCAL_IPV4=192.168.5.99
+      - TZ=America/Sao_Paulo
+      - WEBPASSWORD=senha@123
+      - WEBTHEME=default-light
+      - REV_SERVER=true
+      - REV_SERVER_TARGET=192.168.5.1  
+      - REV_SERVER_DOMAIN=local
+      - REV_SERVER_CIDR=192.168.0.0/16
+      - PIHOLE_DNS_=127.0.0.1#5335
+      - DNSSEC="true"
+      - DNSMASQ_LISTENING=single
+      - DNSMASQ_USER=root
+    networks:
+      docker:
+    logging:
+      options:
+        max-size: 100M  
+
+networks:
+  docker:
